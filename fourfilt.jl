@@ -1,6 +1,4 @@
 function fourfilt(x,delt,tmax,tmin)
-
-global f
 #  FOURFILT  Fourier low, high, or bandpass filter.
 #
 #     [filtdat]=fourfilt(x,delt,tmax,tmin)
@@ -24,17 +22,25 @@ global f
 #
 #               gives bandpass filter passing 10-20 sec. band
 #
+#     REQUIREMENTS: Julia "FFTW" package 
+#
 # Reference:
 # Walters, R. A.  and Heston, C., 1982. Removing the tidal-period variations from time-series
 # data using low-pass digital filters. Journal of Physical Oeanography, 12 112-115 .
 #
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# Julia version that has been translated from MATLAB version 
+# by William Pringle on 08/21/2019
+# MATLAB verion is available from Rich Signell's "RPSstuff" github
+#
 # Version 1.0  (12/4/96)  Jeff List (jlist@usgs.gov)
 # Version 1.1  (1/8/97)  Rich Signell (rsignell@usgs.gov)
 #     removed argument for number of points and add error trapping for matrices
 # Version 1.1b (12/1/2005) Rich Signell (rsignell@usgs.gov)
 #     added reference
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+global f
 
 if ndims(x) != 1
   display("fourfilt cannot handle matrices");

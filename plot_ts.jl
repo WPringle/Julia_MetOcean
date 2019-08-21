@@ -2,6 +2,8 @@
 # - observations are automatically extracted from tides and currents
 # - only time series where both model and observations are sufficiently complete
 #   are plotted
+# - Plots daily maximum water levels from the timeseries in addition
+#   to full timeseries and lowpass filtered timeseries
 using NetCDF
 using Plots
 using Dates
@@ -24,7 +26,6 @@ dpiset = 300
 
 # filenames
 filename = "ATT/Mv13.61.nc"
-#filename = "ATT/stanames.61.nc"
 sn = ncread(filename, "station_name")
 # read parts of the netcdf file, convert to datetimes
 time = ncread(filename, "time")
@@ -76,6 +77,7 @@ for ii = 1:size(sn,2)
     display(ii)
     display(join(sn[:,ii]))
 
+    # Process observed results
     zo = mycsv[:,2]
     zo[ismissing.(mycsv[:,2])] .= NaN
     # subtract 30-day moving window
@@ -88,11 +90,12 @@ for ii = 1:size(sn,2)
     to = collapse(to,day,first,maximum)
     rename!(to, linenames[1])
 
-    # convert model data into the timeseries array
+    # Process modeled results
     zm = zeta[ii,:]
     # remove 30-day moving mean
     zmfilt = fourfilt(zm,tmstep,Inf,lpwindow)
     zmaf = zm .- zmfilt
+    # convert model data into the timeseries array
     tm = TimeArray(dt,zmaf)
     # calculate daily maximum
     tm = collapse(tm,day,first,maximum)
