@@ -46,7 +46,7 @@ if ndims(x) != 1
   display("fourfilt cannot handle matrices");
   return
 end
-if sum(isnan.(x)) > 1
+if sum(isnan.(x)) > 0
   display("fourfilt will not work with nans in timeseries")
   return
 end
