@@ -80,7 +80,7 @@ for ii = 1:size(sn,2)
     # Process observed results
     zo = mycsv[:,2]
     zo[ismissing.(mycsv[:,2])] .= NaN
-    # subtract 30-day moving window
+    # remove low-pass filtered timeseries
     tostep = (Dates.value(dtn[2]-dtn[1]))/1000 #seconds
     zofilt = fourfilt(zo,tostep,Inf,lpwindow)
     zoaf = zo .- zofilt
@@ -92,7 +92,7 @@ for ii = 1:size(sn,2)
 
     # Process modeled results
     zm = zeta[ii,:]
-    # remove 30-day moving mean
+    # remove low-pass filtered timeseries
     zmfilt = fourfilt(zm,tmstep,Inf,lpwindow)
     zmaf = zm .- zmfilt
     # convert model data into the timeseries array
